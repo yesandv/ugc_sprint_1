@@ -38,6 +38,7 @@ class Settings(BaseSettings):
             "user": self.vertica_user,
             "password": self.vertica_password,
             "autocommit": True,
+            "tlsmode": "disable",
         }
 
     model_config = SettingsConfigDict(
