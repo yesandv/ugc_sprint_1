@@ -85,7 +85,7 @@ def clickhouse_realtime_read(client: Client, duration: int = 30):
 
         if aggregate_duration > 10:
             logger.warning(
-                "Query exceeded 10 seconds. Duration: %.2f seconds",
+                "Clickhouse query exceeded 10 seconds. Duration: %.2f seconds",
                 aggregate_duration,
             )
             break
@@ -148,7 +148,7 @@ def vertica_realtime_read(
 
         if aggregate_duration > 10:
             logger.warning(
-                "Query exceeded 10 seconds. Duration: %.2f seconds",
+                "Vertica query exceeded 10 seconds. Duration: %.2f seconds",
                 aggregate_duration,
             )
             break
