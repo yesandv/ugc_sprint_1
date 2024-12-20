@@ -10,7 +10,6 @@ create_click_table = """
     PRIMARY KEY id;
 """
 
-
 create_page_view_table = """
     CREATE TABLE IF NOT EXISTS {}
     (
@@ -67,7 +66,6 @@ insert_click_event = (
     "INSERT INTO {} (user_id, timestamp, dom_element) VALUES {}"
 )
 
-
 insert_page_view_event = """
     INSERT INTO {}
     (
@@ -90,7 +88,6 @@ insert_video_quality_event = """
     )
     VALUES {}
 """
-
 
 insert_completion_event = (
     "INSERT INTO {} (user_id, timestamp, film_id) VALUES {}"
