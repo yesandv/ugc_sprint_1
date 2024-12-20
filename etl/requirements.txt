@@ -1,0 +1,5 @@
+clickhouse-driver~=0.2.9
+kafka-python~=2.0.2
+pydantic~=2.10.3
+pydantic-settings~=2.5.2
+six~=1.17.0
