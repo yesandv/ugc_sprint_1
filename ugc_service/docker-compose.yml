@@ -12,8 +12,10 @@ services:
       KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka-0:9093,1@kafka-1:9093,2@kafka-2:9093
       KAFKA_KRAFT_CLUSTER_ID: abcdefghijklmnopqrstuv
       KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
-      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka-0:9092,EXTERNAL://127.0.0.1:9094
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka-0:9092,EXTERNAL://kafka-0:9094
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+    networks:
+      - network
 
   kafka-1:
     image: bitnami/kafka:3.4
@@ -28,8 +30,10 @@ services:
       KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka-0:9093,1@kafka-1:9093,2@kafka-2:9093
       KAFKA_KRAFT_CLUSTER_ID: abcdefghijklmnopqrstuv
       KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9095
-      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:9092,EXTERNAL://127.0.0.1:9095
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:9092,EXTERNAL://kafka-1:9095
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+    networks:
+      - network
 
   kafka-2:
     image: bitnami/kafka:3.4
@@ -44,8 +48,10 @@ services:
       KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka-0:9093,1@kafka-1:9093,2@kafka-2:9093
       KAFKA_KRAFT_CLUSTER_ID: abcdefghijklmnopqrstuv
       KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9096
-      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:9092,EXTERNAL://127.0.0.1:9096
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:9092,EXTERNAL://kafka-2:9096
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+    networks:
+      - network
 
   kafka-topics:
     image: bitnami/kafka:3.4
@@ -58,6 +64,9 @@ services:
       - kafka-0
       - kafka-1
       - kafka-2
+    networks:
+      - network
+    restart: on-failure
 
   fastapi:
     build:
@@ -76,3 +85,9 @@ services:
       uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
       "
     restart: on-failure
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge

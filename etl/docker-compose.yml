@@ -1,0 +1,37 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: ${CLICKHOUSE_HOST}
+    environment:
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+    ports:
+      - "8123:8123"
+      - ${CLICKHOUSE_PORT}:${CLICKHOUSE_PORT}
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8123/ping
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    networks:
+      - ugc_service_network
+
+  etl:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: etl_process
+    env_file:
+      - .env
+    entrypoint: sh -c "python etl/kafka_to_clickhouse/main.py"
+    depends_on:
+      clickhouse:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - ugc_service_network
+
+networks:
+  ugc_service_network:
+    external: true
