@@ -32,7 +32,7 @@ services:
     env_file:
       - .env
     entrypoint: >
-      sh -c "python -m tests.src.load"
+      sh -c "python -m tests.src.main"
     depends_on:
       clickhouse:
         condition: service_healthy
