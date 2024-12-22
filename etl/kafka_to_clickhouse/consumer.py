@@ -15,6 +15,7 @@ class Consumer:
             bootstrap_servers=[f"{settings.kafka_host}:{settings.kafka_port}"],
             auto_offset_reset="earliest",
             group_id="etl_group",
+            enable_auto_commit=False,
         )
 
     def consume_messages(self):

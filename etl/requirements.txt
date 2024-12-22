@@ -1,3 +1,4 @@
+backoff~=2.2.1
 clickhouse-driver~=0.2.9
 kafka-python~=2.0.2
 pydantic~=2.10.3

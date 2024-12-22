@@ -24,7 +24,8 @@ class ETLProcess:
         for table_name, data_group in groupby(self.batch, key=lambda x: x[0]):
             data_list = [data[1] for data in data_group]
             self.clickhouse_loader.load_data(table_name, data_list)
-            self.batch = []
+        self.consumer.kafka_consumer.commit()
+        self.batch = []
 
     def run(self):
         logger.info("Starting the ETL process")

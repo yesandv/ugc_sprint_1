@@ -1,3 +1,4 @@
+import backoff
 from clickhouse_driver import Client
 from clickhouse_driver.errors import NetworkError
 
@@ -11,6 +12,12 @@ class ClickhouseLoader:
     def __init__(self):
         self.client = Client(**settings.clickhouse_config)
 
+    @backoff.on_exception(
+        backoff.expo,
+        NetworkError,
+        max_tries=5,
+        jitter=backoff.full_jitter
+    )
     def load_data(
             self,
             table_name: str,
