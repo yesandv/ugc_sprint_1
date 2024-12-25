@@ -2,9 +2,9 @@ from typing import TypeVar
 
 from pydantic import BaseModel, ConfigDict
 
-from ugc_service.src.schemas.event import Event
+from ugc_service.src.schemas.event import BaseEvent
 
-T = TypeVar("T", bound=Event)
+T = TypeVar("T", bound=BaseEvent)
 
 
 class EventMessage(BaseModel):

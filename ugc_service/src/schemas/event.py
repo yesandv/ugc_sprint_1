@@ -1,5 +1,6 @@
 from abc import ABC
 from enum import StrEnum
+from typing import Union
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -13,26 +14,26 @@ class EventType(StrEnum):
     SEARCH = "search"
 
 
-class Event(ABC, BaseModel):
+class BaseEvent(ABC, BaseModel):
     pass
 
 
-class ClickEvent(Event):
+class ClickEvent(BaseEvent):
     dom_element: str
 
 
-class PageViewEvent(Event):
+class PageViewEvent(BaseEvent):
     url: str
     duration_sec: int
 
 
-class VideoQualityEvent(Event):
+class VideoQualityEvent(BaseEvent):
     film_id: UUID
     old_resolution: int
     new_resolution: int
 
 
-class CompletionEvent(Event):
+class CompletionEvent(BaseEvent):
     film_id: UUID
 
 
@@ -42,6 +43,11 @@ class Filter(StrEnum):
     PERSON = "person"
 
 
-class SearchEvent(Event):
+class SearchEvent(BaseEvent):
     filter: Filter
     query: str
+
+
+Event = Union[
+    ClickEvent, PageViewEvent, VideoQualityEvent, CompletionEvent, SearchEvent
+]
